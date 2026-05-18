@@ -1,4 +1,4 @@
-.PHONY: create-practice remove-practice install install-dev test lint format type-check build clean upload-test check-missing-reqs ci
+.PHONY: create-practice remove-practice install test lint format type-check build clean upload-test check-missing-reqs ci
 
 create-practice:
 ifndef NAME
@@ -19,9 +19,6 @@ PIP := $(PYTHON) -m pip
 
 install:
 	$(PIP) install -r requirements.txt
-
-install-dev:
-	$(PIP) install -r requirements-dev.txt
 	$(PIP) install -e .
 
 test:
