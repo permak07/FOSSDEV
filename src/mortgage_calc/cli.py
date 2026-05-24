@@ -4,6 +4,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 from mortgage_calc.calculator import calculate
 from mortgage_calc.formatter import format_currency, format_schedule_table, format_summary
@@ -59,7 +60,7 @@ def create_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def format_json(result) -> str:
+def format_json(result: Any) -> str:
     """Форматировать результат в JSON."""
     return json.dumps({
         "monthly_payment": result.monthly_payment,
@@ -78,7 +79,7 @@ def format_json(result) -> str:
     }, indent=2, ensure_ascii=False)
 
 
-def format_csv(result) -> str:
+def format_csv(result: Any) -> str:
     """Форматировать график в CSV."""
     lines = ["month,total,principal,interest,remaining"]
     for p in result.schedule:
@@ -88,14 +89,6 @@ def format_csv(result) -> str:
 
 def main() -> None:
     """Точка входа CLI."""
-    # Windows: cp1251 не знает символ ₽, переключаем stdout/stderr в UTF-8
-    if sys.platform == "win32":
-        try:
-            if hasattr(sys.stdout, "reconfigure"):
-                sys.stdout.reconfigure(encoding="utf-8")
-                sys.stderr.reconfigure(encoding="utf-8")
-        except (AttributeError, OSError):
-            pass
     parser = create_parser()
     args = parser.parse_args()
     

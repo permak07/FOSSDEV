@@ -46,33 +46,39 @@ def calculate(
     monthly_payment = monthly_payment.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
     
     schedule: List[Payment] = []
-    remaining = amount_d
+    remaining_balance: Decimal = amount_d
     
     for month in range(1, months + 1):
-        interest = (remaining * monthly_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        interest = (remaining_balance * monthly_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
         
         if month == months:
-            # Последний платёж — корректируем остаток
-            principal = remaining
+            principal = remaining_balance
             total = principal + interest
-            remaining = Decimal("0")
+            next_balance: Decimal = Decimal("0")
         else:
             principal = monthly_payment - interest
-            if principal > remaining:
-                principal = remaining
+            if principal > remaining_balance:
+                principal = remaining_balance
             total = principal + interest
-            remaining = (remaining - principal).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            next_balance = (remaining_balance - principal).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
         
         schedule.append(Payment(
             month=month,
             total=float(total),
             principal=float(principal),
             interest=float(interest),
-            remaining=float(remaining),
+            remaining=float(next_balance),
         ))
+        remaining_balance = next_balance
     
-    total_payment = sum(Decimal(str(p.total)) for p in schedule)
-    total_interest = sum(Decimal(str(p.interest)) for p in schedule)
+    total_payment: Decimal = sum(
+        (Decimal(str(p.total)) for p in schedule),
+        Decimal("0"),
+    )
+    total_interest: Decimal = sum(
+        (Decimal(str(p.interest)) for p in schedule),
+        Decimal("0"),
+    )
     
     return PaymentSchedule(
         monthly_payment=float(monthly_payment),
