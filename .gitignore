@@ -1,0 +1,36 @@
+# Environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# IDEs
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Кэш инструментов тестирования и статического анализа
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Результаты сборки и отчеты о покрытии кода
+dist/
+htmlcov/
+.coverage
+
+# Кэш компиляции Python
+**/__pycache__/
+*.pyc
+
+# Метаданные сборки проекта
+*.egg-info/
