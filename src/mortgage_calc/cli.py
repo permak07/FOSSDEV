@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from mortgage_calc.calculator import calculate
-from mortgage_calc.formatter import format_currency, format_schedule_table, format_summary
+from mortgage_calc.formatter import format_schedule_table, format_summary
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -17,42 +17,49 @@ def create_parser() -> argparse.ArgumentParser:
         description="Ипотечный калькулятор",
     )
     parser.add_argument(
-        "--amount", "-a",
+        "--amount",
+        "-a",
         type=float,
         required=True,
         help="Сумма кредита",
     )
     parser.add_argument(
-        "--rate", "-r",
+        "--rate",
+        "-r",
         type=float,
         required=True,
         help="Годовая процентная ставка (%%)",
     )
     parser.add_argument(
-        "--years", "-y",
+        "--years",
+        "-y",
         type=int,
         required=True,
         help="Срок кредита в годах",
     )
     parser.add_argument(
-        "--format", "-f",
+        "--format",
+        "-f",
         choices=["text", "json", "csv"],
         default="text",
         help="Формат вывода (по умолчанию: text)",
     )
     parser.add_argument(
-        "--schedule", "-s",
+        "--schedule",
+        "-s",
         action="store_true",
         help="Показать полный график платежей",
     )
     parser.add_argument(
-        "--limit", "-l",
+        "--limit",
+        "-l",
         type=int,
         default=12,
         help="Количество строк графика (по умолчанию: 12)",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=Path,
         default=None,
         help="Сохранить результат в файл",
@@ -62,21 +69,25 @@ def create_parser() -> argparse.ArgumentParser:
 
 def format_json(result: Any) -> str:
     """Форматировать результат в JSON."""
-    return json.dumps({
-        "monthly_payment": result.monthly_payment,
-        "total_payment": result.total_payment,
-        "total_interest": result.total_interest,
-        "schedule": [
-            {
-                "month": p.month,
-                "total": p.total,
-                "principal": p.principal,
-                "interest": p.interest,
-                "remaining": p.remaining,
-            }
-            for p in result.schedule
-        ],
-    }, indent=2, ensure_ascii=False)
+    return json.dumps(
+        {
+            "monthly_payment": result.monthly_payment,
+            "total_payment": result.total_payment,
+            "total_interest": result.total_interest,
+            "schedule": [
+                {
+                    "month": p.month,
+                    "total": p.total,
+                    "principal": p.principal,
+                    "interest": p.interest,
+                    "remaining": p.remaining,
+                }
+                for p in result.schedule
+            ],
+        },
+        indent=2,
+        ensure_ascii=False,
+    )
 
 
 def format_csv(result: Any) -> str:
@@ -91,13 +102,13 @@ def main() -> None:
     """Точка входа CLI."""
     parser = create_parser()
     args = parser.parse_args()
-    
+
     try:
         result = calculate(args.amount, args.rate, args.years)
     except ValueError as e:
         print(f"Ошибка: {e}", file=sys.stderr)
         sys.exit(1)
-    
+
     if args.format == "json":
         output = format_json(result)
     elif args.format == "csv":
@@ -108,7 +119,7 @@ def main() -> None:
             lines.append("")
             lines.append(format_schedule_table(result.schedule, args.limit))
         output = "\n".join(lines)
-    
+
     if args.output:
         args.output.write_text(output, encoding="utf-8")
         print(f"Результат сохранён в {args.output}")

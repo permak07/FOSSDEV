@@ -1,7 +1,5 @@
 """Форматирование результатов."""
 
-from typing import List
-
 from mortgage_calc.types import Payment, PaymentSchedule
 
 
@@ -15,23 +13,24 @@ def format_percent(value: float) -> str:
     return f"{value:.2f}%"
 
 
-def format_schedule_table(schedule: List[Payment], limit: int | None = None) -> str:
+def format_schedule_table(schedule: list[Payment], limit: int | None = None) -> str:
     """Сформировать текстовую таблицу графика платежей."""
     lines = [
-        f"{'Месяц':>6} │ {'Платёж':>12} │ {'Основной долг':>14} │ {'Проценты':>12} │ {'Остаток':>12}",
+        f"{'Месяц':>6} │ {'Платёж':>12} │ {'Основной долг':>14} │ "
+        f"{'Проценты':>12} │ {'Остаток':>12}",
         "─" * 75,
     ]
-    
+
     display = schedule[:limit] if limit else schedule
     for p in display:
         lines.append(
             f"{p.month:>6} │ {p.total:>12,.2f} │ {p.principal:>14,.2f} │ "
             f"{p.interest:>12,.2f} │ {p.remaining:>12,.2f}"
         )
-    
+
     if limit and len(schedule) > limit:
         lines.append(f"\n... и ещё {len(schedule) - limit} платежей")
-    
+
     return "\n".join(lines)
 
 

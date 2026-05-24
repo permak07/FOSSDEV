@@ -14,7 +14,7 @@ def test_format_summary() -> None:
     """Форматирование сводки."""
     result = calculate(amount=1_000_000, annual_rate=12.0, years=1)
     summary = format_summary(result)
-    
+
     assert "Ежемесячный платёж" in summary
     assert "1 000 000" not in summary
     assert "1 000000" not in summary
@@ -24,7 +24,7 @@ def test_format_schedule_table() -> None:
     """Форматирование таблицы."""
     result = calculate(amount=100_000, annual_rate=12.0, years=1)
     table = format_schedule_table(result.schedule, limit=3)
-    
+
     assert "Месяц" in table
     assert "1" in table
     assert "2" in table

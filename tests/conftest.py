@@ -1,7 +1,5 @@
 """Фикстуры для тестов."""
 
-from typing import Generator
-
 import pytest
 
 from mortgage_calc.calculator import calculate
