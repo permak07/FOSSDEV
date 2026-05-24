@@ -2,8 +2,8 @@
 
 import pytest
 
-from src.mortgage_calc.calculator import calculate
-from src.mortgage_calc.types import PaymentSchedule
+from mortgage_calc.calculator import calculate
+from mortgage_calc.types import PaymentSchedule
 
 
 def test_basic_calculation():

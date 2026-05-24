@@ -29,15 +29,14 @@ classifiers = [
 mortgage = "mortgage_calc.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/mortgage-calc"
-Repository = "https://github.com/yourusername/mortgage-calc"
+Homepage = "https://github.com/permak07/FOSSDEV/tree/mortgage_calc"
+Repository = "https://github.com/permak07/FOSSDEV/tree/mortgage_calc"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
 
 [tool.mypy]
 python_version = "3.9"

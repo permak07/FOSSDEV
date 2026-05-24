@@ -2,7 +2,7 @@
 
 import pytest
 
-from src.mortgage_calc.calculator import calculate
+from mortgage_calc.calculator import calculate
 
 
 @pytest.fixture
