@@ -34,6 +34,6 @@ lint:
 	$(PYTHON) -m black --check src/
 
 test:
-	$(PYTHON) -m pytest tests/ -v
+	cd src && $(PYTHON) -m pytest ../tests/ -v
 
 check: typecheck check-requirements lint test

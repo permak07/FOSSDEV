@@ -68,6 +68,7 @@ def main() -> int:
 
     # Игнорируем локальные модули проекта
     local_modules = {f.stem for f in src_dir.glob("*.py")}
+    local_modules.add("src")
     imports -= local_modules
 
     missing = set()
