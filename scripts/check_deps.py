@@ -1,4 +1,4 @@
-"""Проверка, что все импорты из src/ покрыты requirements.txt."""
+"""Проверка, что все импорты из src/ и tests/ покрыты requirements."""
 
 import ast
 import sys
@@ -47,13 +47,14 @@ def read_requirements(req_file: Path) -> set[str]:
 
 def main() -> int:
     src_dir = Path("src")
+    tests_dir = Path("tests")
     req_file = Path("requirements.txt")
     req_dev_file = Path("requirements-dev.txt")
 
-    imports = extract_imports(src_dir)
+    imports = extract_imports(src_dir) | extract_imports(tests_dir)
     req_packages = read_requirements(req_file) | read_requirements(req_dev_file)
 
-    # Стандартная библиотека + встроенные модули, которые не нужно указывать
+    # Стандартная библиотека + встроенные модули
     stdlib = {
         "abc", "argparse", "ast", "asyncio", "base64", "collections", "copy",
         "csv", "dataclasses", "datetime", "decimal", "enum", "functools",
@@ -67,7 +68,6 @@ def main() -> int:
 
     # Игнорируем локальные модули проекта
     local_modules = {f.stem for f in src_dir.glob("*.py")}
-    # Также убираем их из imports, чтобы они не попадали в missing
     imports -= local_modules
 
     missing = set()
