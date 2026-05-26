@@ -8,7 +8,7 @@ else
 endif
 
 # --- Targets ---
-.PHONY: venv install run-app check-requirements typecheck
+.PHONY: venv install run-app check-requirements typecheck format lint check
 
 venv:
 	python3 -m venv .venv
@@ -32,3 +32,5 @@ format:
 
 lint:
 	$(PYTHON) -m black --check src/
+
+check: typecheck check-requirements lint

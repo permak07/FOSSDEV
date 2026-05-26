@@ -65,6 +65,11 @@ def main() -> int:
         "xml", "zipfile",
     }
 
+    # Игнорируем локальные модули проекта
+    local_modules = {f.stem for f in src_dir.glob("*.py")}
+    # Также убираем их из imports, чтобы они не попадали в missing
+    imports -= local_modules
+
     missing = set()
     for imp in imports:
         if imp in stdlib:
