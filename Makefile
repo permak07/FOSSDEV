@@ -21,8 +21,14 @@ install:
 run-app:
 	cd src && ../$(PYTHON) app.py
 
+check-requirements:
+	$(PYTHON) scripts/check_deps.py
+
 typecheck:
 	cd src && ../$(PYTHON) -m mypy app.py
 
-check-requirements:
-	$(PYTHON) scripts/check_deps.py
+format:
+	$(PYTHON) -m black src/
+
+lint:
+	$(PYTHON) -m black --check src/

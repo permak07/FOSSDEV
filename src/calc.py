@@ -1,8 +1,10 @@
 """Математические операции для анализа текста."""
 
+
 def count_words(text: str) -> int:
     """Кол-во слов в тексте."""
     return len(text.split())
+
 
 def avg_word_length(words: list[str]) -> float:
     """Подсёт средней длины слов"""
